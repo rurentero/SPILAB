@@ -2,6 +2,7 @@
 // 
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <M5StickC.h>
 
 const char* ssid = "Gloin";
 const char* password = "Gloin2014";
@@ -43,12 +44,25 @@ void setup() {
     }
   }
 
+  // Subscribe to topic
   client.subscribe("mytopic/test");
 
+  // initialize the M5StickObject (for LCD notifications)
+  M5.begin();
 }
 
+// ---- Function invoked every time a new message arrives to the topic. 
 void callback(char* topic, byte* payload, unsigned int length) {
- 
+
+  // Show notification in LCD
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setCursor(0, 10);
+  M5.Lcd.setTextColor(WHITE);
+  M5.Lcd.setTextSize(1);
+  M5.Lcd.printf("New Notification!");
+  M5.Lcd.fillCircle(40, 80, 30, RED);
+
+  // PubSub Tasks
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
  
@@ -63,7 +77,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   //client.publish("mytopic/test", "This is a message sent 5 seconds later");
   client.loop();
 }
