@@ -2,9 +2,9 @@
 // Sketch designed for M5-Stick-C based on Esp32 boards.
 #include <WiFi.h>
 #include <PubSubClient.h>
+// WARNING: MQTT_MAX_PACKET_SIZE needs to be defined in PubSubClient.h library. MQTT Max message size is 128B by default.
 #include <M5StickC.h>
 #include <ArduinoJson.h>
-// WARNING: MQTT_MAX_PACKET_SIZE needs to be defined in PubSubClient.h library. MQTT Max message size is 128 by default.
 
 const char* ssid = "Gloin";
 const char* password = "Gloin2014";
@@ -76,15 +76,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(F("Recource Type: "));
   const char* resource = doc["resource"];
   Serial.println(resource);
-// TODO Probar resto de accesos a obetos/arrays anidados
-//  Serial.println(F("Params -> Event: "));
-//  Serial.println(doc["params"]["event"]["id"]);
-//  Serial.println(doc["params"]["event"]["title"]);
-//  Serial.println(doc["params"]["event"]["description"]);
-//  Serial.println(F("Params -> Event --> Location: "));
-//  Serial.println(doc["params"]["event"]["location"]["latitude"]);
-//  Serial.println(doc["params"]["event"]["location"]["longitude"]);
-//  Serial.println(doc["params"]["event"]["location"]["radius"]);
+// All data accesses
+//  const char* method_ = doc["method"];
+//  Serial.println(method_);
+//  const char* sender = doc["sender"];
+//  Serial.println(sender);
+//  Serial.println(F("Params -> Event:"));
+//  int eventId = doc["params"]["event"]["id"];
+//  Serial.println(eventId);
+//  const char* title = doc["params"]["event"]["title"];
+//  Serial.println(title);
+//  const char* description = doc["params"]["event"]["description"];
+//  Serial.println(description);
+//  Serial.println(F("Event -> Location: "));
+//  double latitude = doc["params"]["event"]["location"]["latitude"];
+//  Serial.println(latitude,6);
+//  double longitude = doc["params"]["event"]["location"]["longitude"];
+//  Serial.println(longitude,6);
+//  int radius = doc["params"]["event"]["location"]["radius"];
+//  Serial.println(radius);
 
   //Resource selector. TODO: En caso de APIs diferentes métodos para una ruta, habría que hacer un selector para el tipo de método
   if (strcmp(resource,"Event")==0) {
