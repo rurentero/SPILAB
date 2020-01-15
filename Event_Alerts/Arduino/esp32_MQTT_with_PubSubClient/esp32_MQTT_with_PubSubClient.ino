@@ -99,10 +99,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
 //  int radius = doc["params"]["event"]["location"]["radius"];
 //  Serial.println(radius);
 
-  //Resource selector. TODO: En caso de APIs diferentes métodos para una ruta, habría que hacer un selector para el tipo de método
+  //Resource selector
   if (strcmp(resource,"Event")==0) {
     notify("New notification: Event");
-    // Method selector: GET, POST, PUT, DELETE
+    // Method selector: GET, POST, PUT, DELETE. Note that "method" (JSON) === operationId (OpenAPI)
     if (strcmp(method_,"getEvent")==0) { 
       getEvent();
     }
