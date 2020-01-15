@@ -12,6 +12,9 @@ const char* mqttServer = "192.168.0.107";
 const int mqttPort = 1883;
 const char* mqttUser = "";
 const char* mqttPassword = "";
+
+// TODO Creación de structs para almacenar los datos entrantes
+// TODO Modularizar el parseo desde un JSON a un struct con el objeto (Evento o User) 
  
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -76,9 +79,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(F("Recource Type: "));
   const char* resource = doc["resource"];
   Serial.println(resource);
-// All data accesses
-//  const char* method_ = doc["method"];
-//  Serial.println(method_);
+  const char* method_ = doc["method"];
+  Serial.println(method_);
+// ---- All data accesses
 //  const char* sender = doc["sender"];
 //  Serial.println(sender);
 //  Serial.println(F("Params -> Event:"));
@@ -99,11 +102,40 @@ void callback(char* topic, byte* payload, unsigned int length) {
   //Resource selector. TODO: En caso de APIs diferentes métodos para una ruta, habría que hacer un selector para el tipo de método
   if (strcmp(resource,"Event")==0) {
     notify("New notification: Event");
-    postEvent();
+    // Method selector: GET, POST, PUT, DELETE
+    if (strcmp(method_,"getEvent")==0) { 
+      getEvent();
+    }
+    else if (strcmp(method_,"postEvent")==0){
+      postEvent();
+    }
+    else if (strcmp(method_,"putEvent")==0){
+      putEvent();
+    }
+    else if (strcmp(method_,"deleteEvent")==0){
+      deleteEvent();
+    }
+    else { // Default
+      Serial.println("Resource method not supported.");
+    }
   }
   else if (strcmp(resource,"User")==0) {
     notify("New notification: User");
-    getUsers();
+    if (strcmp(method_,"getUser")==0) { 
+      getUser();
+    }
+    else if (strcmp(method_,"postUser")==0){
+      postUser();
+    }
+    else if (strcmp(method_,"putUser")==0){
+      putUser();
+    }
+    else if (strcmp(method_,"deleteUser")==0){
+      deleteUser();
+    }
+    else { // Default
+      Serial.println("Resource method not supported.");
+    }
   }
   else {  //Default
     Serial.println("API resource not supported.");
@@ -117,15 +149,41 @@ void loop() {
 }
 
 
-// ---- API Methods
+// --------------- API Methods
+// ---- Event
+void getEvent() {
+  // Mocked response
+  Serial.println("Method: getEvent");
+}
 void postEvent() {
   // Mocked response
   Serial.println("Method: postEvent");
 }
-
-void getUsers() {
+void putEvent() {
   // Mocked response
-  Serial.println("Method: getUsers");
+  Serial.println("Method: putEvent");
+}
+void deleteEvent() {
+  // Mocked response
+  Serial.println("Method: deleteEvent");
+}
+
+// ---- User
+void getUser() {
+  // Mocked response
+  Serial.println("Method: getUser");
+}
+void postUser() {
+  // Mocked response
+  Serial.println("Method: postUser");
+}
+void putUser() {
+  // Mocked response
+  Serial.println("Method: putUser");
+}
+void deleteUser() {
+  // Mocked response
+  Serial.println("Method: deleteUser");
 }
 
 
